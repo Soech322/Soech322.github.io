@@ -1,1 +1,168 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="A responsive demonstration website for a fictional garden studio."><title>Fieldwork — Garden Studio Demo</title><link rel="stylesheet" href="style.css"></head><body><a class="skip" href="#main">Skip to content</a><header><nav class="wrap"><a class="brand" href="./">Fieldwork / garden studio</a><div class="links"><a href="../../">Portfolio ↗</a><a href="README.md">Project notes</a></div></nav></header><main id="main"><section class="hero wrap"><div class="eyebrow">FICTIONAL BUSINESS / WEBSITE DEMO</div><h1>More life.<br>Just outside.</h1><p>Garden planning and seasonal care for small outdoor spaces. A clear, welcoming website concept for an independent service business.</p><div class="actions"><a class="button" href="#inquiry">Plan your space ↗</a><a class="button secondary" href="#services">Explore services ↓</a></div><div style="height:170px;border-radius:90px 12px 12px 12px;background:#dce5c9;overflow:hidden" aria-hidden="true"><svg viewBox="0 0 1100 170" width="100%" height="100%"><path d="M0 170Q300 -60 550 170Q800 -40 1100 170" fill="#8cae85"/><path d="M300 170Q500 30 650 170" fill="#174c43"/><circle cx="850" cy="45" r="25" fill="#d7ef82"/></svg></div></section><section id="services" class="section"><div class="wrap"><div class="eyebrow">ROOM TO GROW</div><h2>A little care goes a long way.</h2><div class="grid three"><article class="card"><span class="eyebrow">01 / PLAN</span><h3>Small-space design</h3><p>A practical layout for a courtyard, front garden, or balcony, shaped around how you use it.</p></article><article class="card"><span class="eyebrow">02 / PLANT</span><h3>Seasonal planting</h3><p>A planting concept that considers sunlight, maintenance, and the changing seasons.</p></article><article class="card"><span class="eyebrow">03 / CARE</span><h3>Garden upkeep</h3><p>Simple seasonal tasks to keep an outdoor space welcoming and manageable.</p></article></div></div></section><section class="section"><div class="wrap grid"><div><div class="eyebrow">A CLEAR PROCESS</div><h2>Listen. Plan. Grow.</h2></div><div><details open><summary>01 — Tell us about your space</summary><p>Describe the space, your priorities, and the care it needs.</p></details><details><summary>02 — Agree on a practical plan</summary><p>Review the proposed scope, schedule, and cost before starting.</p></details><details><summary>03 — Make room for everyday life</summary><p>Carry out the agreed work and share a simple ongoing care plan.</p></details></div></div></section><section id="inquiry" class="section"><div class="wrap grid"><div><div class="eyebrow">TRY THE INQUIRY FORM</div><h2>What could your<br>space become?</h2><p>This is a local form demonstration. It validates your input and shows a summary; it does not send or store your details.</p></div><form class="panel" id="inquiry-form"><label for="name">Your name</label><input id="name" name="name" required maxlength="80" autocomplete="name"><label for="email">Email address</label><input id="email" name="email" required type="email" maxlength="150" autocomplete="email"><label for="service">What do you need?</label><select id="service" name="service"><option>Small-space design</option><option>Seasonal planting</option><option>Garden upkeep</option></select><label for="message">Tell us about your space</label><textarea id="message" name="message" required minlength="10" maxlength="1500"></textarea><button type="submit">Preview inquiry →</button><output id="confirmation" class="status" aria-live="polite"></output></form></div></section></main><script src="app.js" defer></script><footer><div class="wrap">Demonstration project by Vladimir Borodkin · <a href="https://www.linkedin.com/in/vladimir-borodkin-65a210445/">Discuss a project ↗</a></div></footer></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="A responsive demonstration website for a fictional garden studio."
+    />
+    <title>Fieldwork — Garden Studio Demo</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header>
+      <nav class="wrap">
+        <a class="brand" href="./">Fieldwork / garden studio</a>
+        <div class="links">
+          <a href="../../">Portfolio ↗</a><a href="README.md">Project notes</a>
+        </div>
+      </nav>
+    </header>
+    <main id="main">
+      <section class="hero wrap">
+        <div class="eyebrow">FICTIONAL BUSINESS / WEBSITE DEMO</div>
+        <h1>More life.<br />Just outside.</h1>
+        <p>
+          Garden planning and seasonal care for small outdoor spaces. A clear,
+          welcoming website concept for an independent service business.
+        </p>
+        <div class="actions">
+          <a class="button" href="#inquiry">Plan your space ↗</a
+          ><a class="button secondary" href="#services">Explore services ↓</a>
+        </div>
+        <div
+          style="
+            height: 170px;
+            border-radius: 90px 12px 12px 12px;
+            background: #dce5c9;
+            overflow: hidden;
+          "
+          aria-hidden="true"
+        >
+          <svg viewBox="0 0 1100 170" width="100%" height="100%">
+            <path d="M0 170Q300 -60 550 170Q800 -40 1100 170" fill="#8cae85" />
+            <path d="M300 170Q500 30 650 170" fill="#174c43" />
+            <circle cx="850" cy="45" r="25" fill="#d7ef82" />
+          </svg>
+        </div>
+      </section>
+      <section id="services" class="section">
+        <div class="wrap">
+          <div class="eyebrow">ROOM TO GROW</div>
+          <h2>A little care goes a long way.</h2>
+          <div class="grid three">
+            <article class="card">
+              <span class="eyebrow">01 / PLAN</span>
+              <h3>Small-space design</h3>
+              <p>
+                A practical layout for a courtyard, front garden, or balcony,
+                shaped around how you use it.
+              </p>
+            </article>
+            <article class="card">
+              <span class="eyebrow">02 / PLANT</span>
+              <h3>Seasonal planting</h3>
+              <p>
+                A planting concept that considers sunlight, maintenance, and the
+                changing seasons.
+              </p>
+            </article>
+            <article class="card">
+              <span class="eyebrow">03 / CARE</span>
+              <h3>Garden upkeep</h3>
+              <p>
+                Simple seasonal tasks to keep an outdoor space welcoming and
+                manageable.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="wrap grid">
+          <div>
+            <div class="eyebrow">A CLEAR PROCESS</div>
+            <h2>Listen. Plan. Grow.</h2>
+          </div>
+          <div>
+            <details open>
+              <summary>01 — Tell us about your space</summary>
+              <p>Describe the space, your priorities, and the care it needs.</p>
+            </details>
+            <details>
+              <summary>02 — Agree on a practical plan</summary>
+              <p>
+                Review the proposed scope, schedule, and cost before starting.
+              </p>
+            </details>
+            <details>
+              <summary>03 — Make room for everyday life</summary>
+              <p>
+                Carry out the agreed work and share a simple ongoing care plan.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+      <section id="inquiry" class="section">
+        <div class="wrap grid">
+          <div>
+            <div class="eyebrow">TRY THE INQUIRY FORM</div>
+            <h2>What could your<br />space become?</h2>
+            <p>
+              This is a local form demonstration. It validates your input and
+              shows a summary; it does not send or store your details.
+            </p>
+          </div>
+          <form class="panel" id="inquiry-form">
+            <label for="name">Your name</label
+            ><input
+              id="name"
+              name="name"
+              required
+              maxlength="80"
+              autocomplete="name"
+            /><label for="email">Email address</label
+            ><input
+              id="email"
+              name="email"
+              required
+              type="email"
+              maxlength="150"
+              autocomplete="email"
+            /><label for="service">What do you need?</label
+            ><select id="service" name="service">
+              <option>Small-space design</option>
+              <option>Seasonal planting</option>
+              <option>Garden upkeep</option></select
+            ><label for="message">Tell us about your space</label
+            ><textarea
+              id="message"
+              name="message"
+              required
+              minlength="10"
+              maxlength="1500"
+            ></textarea
+            ><button type="submit">Preview inquiry →</button
+            ><output
+              id="confirmation"
+              class="status"
+              aria-live="polite"
+            ></output>
+          </form>
+        </div>
+      </section>
+    </main>
+    <script src="app.js" defer></script>
+    <footer>
+      <div class="wrap">
+        Demonstration project by Vladimir Borodkin ·
+        <a href="https://www.linkedin.com/in/vladimir-borodkin-65a210445/"
+          >Discuss a project ↗</a
+        >
+      </div>
+    </footer>
+  </body>
+</html>

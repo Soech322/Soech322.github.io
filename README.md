@@ -6,31 +6,31 @@ Five practical demonstrations covering HTML, responsive web development, JavaScr
 
 ## Projects
 
-| Project | Skills | Demo | Source and notes |
-|---|---|---|---|
-| Fieldwork | HTML · CSS · Web development | [Open](https://Soech322.github.io/projects/business-site/) | [README](projects/business-site/README.md) |
-| Scope & price | JavaScript · DOM · Forms | [Open](https://Soech322.github.io/projects/quote-calculator/) | [README](projects/quote-calculator/README.md) |
-| Places to pause | Leaflet.js · JavaScript · GIS | [Open](https://Soech322.github.io/projects/city-map/) | [README](projects/city-map/README.md) |
-| GeoJSON Lab | GeoJSON · JavaScript · GIS | [Open](https://Soech322.github.io/projects/geojson-lab/) | [README](projects/geojson-lab/README.md) |
-| Link Check | Python · Maintenance · Technical support | [Open](https://Soech322.github.io/projects/link-checker/) | [README](projects/link-checker/README.md) |
+| Project         | Skills                                   | Demo                                                          | Source and notes                              |
+| --------------- | ---------------------------------------- | ------------------------------------------------------------- | --------------------------------------------- |
+| Fieldwork       | HTML · CSS · Web development             | [Open](https://Soech322.github.io/projects/business-site/)    | [README](projects/business-site/README.md)    |
+| Scope & price   | JavaScript · DOM · Forms                 | [Open](https://Soech322.github.io/projects/quote-calculator/) | [README](projects/quote-calculator/README.md) |
+| Places to pause | Leaflet.js · JavaScript · GIS            | [Open](https://Soech322.github.io/projects/city-map/)         | [README](projects/city-map/README.md)         |
+| GeoJSON Lab     | GeoJSON · JavaScript · GIS               | [Open](https://Soech322.github.io/projects/geojson-lab/)      | [README](projects/geojson-lab/README.md)      |
+| Link Check      | Python · Maintenance · Technical support | [Open](https://Soech322.github.io/projects/link-checker/)     | [README](projects/link-checker/README.md)     |
 
 ## Run locally
 
 Node.js 20+ is enough; no npm dependencies or build step.
 
-~~~sh
+```sh
 npm start
-~~~
+```
 
 Open http://127.0.0.1:4173.
 
 ## Check the code
 
-~~~sh
+```sh
 npm test
 cd projects/link-checker
 python -m unittest -v
-~~~
+```
 
 Python 3.10+ is required for the crawler tests.
 

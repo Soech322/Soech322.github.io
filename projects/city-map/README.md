@@ -14,9 +14,9 @@ Geographic points are easier to explore when a map and a searchable list stay co
 
 From the repository root with Node.js 20+:
 
-~~~sh
+```sh
 npm start
-~~~
+```
 
 Open `http://127.0.0.1:4173/projects/city-map/`. No package installation or build step is required.
 

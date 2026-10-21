@@ -1,1 +1,86 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="A filterable Leaflet map using synthetic demonstration locations near Temirtau."><title>Places to Pause — Leaflet Map Demo</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script></head><body><a class="skip" href="#main">Skip to content</a><header><nav class="wrap"><a class="brand" href="./">Places to pause</a><div class="links"><a href="../../">Portfolio ↗</a><a href="README.md">Project notes</a></div></nav></header><main id="main" class="wrap workbench"><div class="eyebrow">03 / LEAFLET.JS & INTERACTIVE MAPS</div><h1>A little closer<br>to the outdoors.</h1><p class="muted">Explore sample parks, play spaces, and walking spots around Temirtau.</p><div class="notice">All six locations are synthetic demonstration data, not verified facilities or an official city dataset.</div><div class="map-layout"><section class="panel"><label for="search">Search sample locations</label><input id="search" type="search" placeholder="Try garden"><label for="category">Category</label><select id="category"><option>All places</option><option>Park</option><option>Playground</option><option>Walking</option></select><p id="count" class="small" aria-live="polite"></p><div id="places"></div><div class="actions"><button id="reset" class="secondary">Reset filters</button></div></section><section><div id="map" class="map" role="region" aria-label="Interactive sample location map"></div><p id="map-status" class="map-note" aria-live="polite">Map library and base tiles require an internet connection. The searchable location list remains available offline.</p><output id="selected" class="result" aria-live="polite">Select a location to see its details.</output></section></div></main><script type="module" src="app.mjs"></script><footer><div class="wrap">Demonstration project by Vladimir Borodkin · <a href="https://www.linkedin.com/in/vladimir-borodkin-65a210445/">Discuss a project ↗</a></div></footer></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="A filterable Leaflet map using synthetic demonstration locations near Temirtau."
+    />
+    <title>Places to Pause — Leaflet Map Demo</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      defer
+    ></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header>
+      <nav class="wrap">
+        <a class="brand" href="./">Places to pause</a>
+        <div class="links">
+          <a href="../../">Portfolio ↗</a><a href="README.md">Project notes</a>
+        </div>
+      </nav>
+    </header>
+    <main id="main" class="wrap workbench">
+      <div class="eyebrow">03 / LEAFLET.JS & INTERACTIVE MAPS</div>
+      <h1>A little closer<br />to the outdoors.</h1>
+      <p class="muted">
+        Explore sample parks, play spaces, and walking spots around Temirtau.
+      </p>
+      <div class="notice">
+        All six locations are synthetic demonstration data, not verified
+        facilities or an official city dataset.
+      </div>
+      <div class="map-layout">
+        <section class="panel">
+          <label for="search">Search sample locations</label
+          ><input id="search" type="search" placeholder="Try garden" /><label
+            for="category"
+            >Category</label
+          ><select id="category">
+            <option>All places</option>
+            <option>Park</option>
+            <option>Playground</option>
+            <option>Walking</option>
+          </select>
+          <p id="count" class="small" aria-live="polite"></p>
+          <div id="places"></div>
+          <div class="actions">
+            <button id="reset" class="secondary">Reset filters</button>
+          </div>
+        </section>
+        <section>
+          <div
+            id="map"
+            class="map"
+            role="region"
+            aria-label="Interactive sample location map"
+          ></div>
+          <p id="map-status" class="map-note" aria-live="polite">
+            Map library and base tiles require an internet connection. The
+            searchable location list remains available offline.
+          </p>
+          <output id="selected" class="result" aria-live="polite"
+            >Select a location to see its details.</output
+          >
+        </section>
+      </div>
+    </main>
+    <script type="module" src="app.mjs"></script>
+    <footer>
+      <div class="wrap">
+        Demonstration project by Vladimir Borodkin ·
+        <a href="https://www.linkedin.com/in/vladimir-borodkin-65a210445/"
+          >Discuss a project ↗</a
+        >
+      </div>
+    </footer>
+  </body>
+</html>

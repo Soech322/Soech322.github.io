@@ -14,10 +14,10 @@ Small websites accumulate broken internal links. This standard-library crawler c
 
 Requires Python 3.10+. No installation or external packages.
 
-~~~sh
+```sh
 python check_links.py https://example.com --max-pages 25 --output report.json
 python -m unittest -v
-~~~
+```
 
 Exit code 0 means no failures were found among checked URLs; 1 means at least one failure. The report is not proof that every URL on the website was checked.
 

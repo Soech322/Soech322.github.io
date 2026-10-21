@@ -14,9 +14,9 @@ Before displaying geodata, inspect its structure and coordinates. The tool accep
 
 From the repository root with Node.js 20+:
 
-~~~sh
+```sh
 npm start
-~~~
+```
 
 Open `http://127.0.0.1:4173/projects/geojson-lab/`. No package installation or build step is required.
 

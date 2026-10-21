@@ -1,1 +1,122 @@
-export function inspectGeoJSON(data){const errors=[],positions=[],types={};const fail=(path,message)=>errors.push(path+': '+message);function position(p,path){if(!Array.isArray(p)||p.length<2||p.some(n=>typeof n!=='number'||!Number.isFinite(n))){fail(path,'expected at least two finite numeric coordinates');return;}if(p[0]<-180||p[0]>180||p[1]<-90||p[1]>90)fail(path,'longitude/latitude outside valid range');positions.push(p);}function line(c,path,min,ring=false){if(!Array.isArray(c)||c.length<min){fail(path,'expected at least '+min+' positions');return;}c.forEach((p,i)=>position(p,path+'['+i+']'));if(ring&&JSON.stringify(c[0])!==JSON.stringify(c.at(-1)))fail(path,'polygon ring must be closed');}function array(c,path,fn){if(!Array.isArray(c)){fail(path,'expected an array');return;}c.forEach((part,i)=>fn(part,path+'['+i+']'));}function polygon(c,path){if(!Array.isArray(c)||c.length===0){fail(path,'expected at least one closed ring');return;}array(c,path,(ring,p)=>line(ring,p,4,true));}function geometry(g,path){if(g===null)return;if(!g||typeof g!=='object'||Array.isArray(g)){fail(path,'expected a geometry object or null');return;}types[g.type]=(types[g.type]||0)+1;const c=g.coordinates,p=path+'.coordinates';switch(g.type){case 'Point':position(c,p);break;case 'MultiPoint':array(c,p,position);break;case 'LineString':line(c,p,2);break;case 'MultiLineString':array(c,p,(v,k)=>line(v,k,2));break;case 'Polygon':polygon(c,p);break;case 'MultiPolygon':array(c,p,polygon);break;case 'GeometryCollection':array(g.geometries,path+'.geometries',geometry);break;default:fail(path+'.type','unsupported geometry type');}}function feature(f,path){if(!f||typeof f!=='object'||f.type!=='Feature'){fail(path,'expected a Feature');return;}if(!Object.hasOwn(f,'geometry'))fail(path,'missing geometry');else geometry(f.geometry,path+'.geometry');if(!Object.hasOwn(f,'properties')||(f.properties!==null&&(typeof f.properties!=='object'||Array.isArray(f.properties))))fail(path+'.properties','expected an object or null');}let features=0;if(!data||typeof data!=='object'||Array.isArray(data))fail('$','expected a GeoJSON object');else if(data.type==='FeatureCollection'){if(!Array.isArray(data.features))fail('$.features','expected an array');else{features=data.features.length;data.features.forEach((f,i)=>feature(f,'$.features['+i+']'));}}else if(data.type==='Feature'){features=1;feature(data,'$');}else geometry(data,'$');let bounds=null;if(positions.length){bounds=[Infinity,Infinity,-Infinity,-Infinity];for(const p of positions){bounds[0]=Math.min(bounds[0],p[0]);bounds[1]=Math.min(bounds[1],p[1]);bounds[2]=Math.max(bounds[2],p[0]);bounds[3]=Math.max(bounds[3],p[1]);}}return {valid:errors.length===0,errors,features,types,positions,bounds};}
+export function inspectGeoJSON(data) {
+  const errors = [],
+    positions = [],
+    types = {};
+  const fail = (path, message) => errors.push(path + ": " + message);
+  function position(p, path) {
+    if (
+      !Array.isArray(p) ||
+      p.length < 2 ||
+      p.some((n) => typeof n !== "number" || !Number.isFinite(n))
+    ) {
+      fail(path, "expected at least two finite numeric coordinates");
+      return;
+    }
+    if (p[0] < -180 || p[0] > 180 || p[1] < -90 || p[1] > 90)
+      fail(path, "longitude/latitude outside valid range");
+    positions.push(p);
+  }
+  function line(c, path, min, ring = false) {
+    if (!Array.isArray(c) || c.length < min) {
+      fail(path, "expected at least " + min + " positions");
+      return;
+    }
+    c.forEach((p, i) => position(p, path + "[" + i + "]"));
+    if (ring && JSON.stringify(c[0]) !== JSON.stringify(c.at(-1)))
+      fail(path, "polygon ring must be closed");
+  }
+  function array(c, path, fn) {
+    if (!Array.isArray(c)) {
+      fail(path, "expected an array");
+      return;
+    }
+    c.forEach((part, i) => fn(part, path + "[" + i + "]"));
+  }
+  function polygon(c, path) {
+    if (!Array.isArray(c) || c.length === 0) {
+      fail(path, "expected at least one closed ring");
+      return;
+    }
+    array(c, path, (ring, p) => line(ring, p, 4, true));
+  }
+  function geometry(g, path) {
+    if (g === null) return;
+    if (!g || typeof g !== "object" || Array.isArray(g)) {
+      fail(path, "expected a geometry object or null");
+      return;
+    }
+    types[g.type] = (types[g.type] || 0) + 1;
+    const c = g.coordinates,
+      p = path + ".coordinates";
+    switch (g.type) {
+      case "Point":
+        position(c, p);
+        break;
+      case "MultiPoint":
+        array(c, p, position);
+        break;
+      case "LineString":
+        line(c, p, 2);
+        break;
+      case "MultiLineString":
+        array(c, p, (v, k) => line(v, k, 2));
+        break;
+      case "Polygon":
+        polygon(c, p);
+        break;
+      case "MultiPolygon":
+        array(c, p, polygon);
+        break;
+      case "GeometryCollection":
+        array(g.geometries, path + ".geometries", geometry);
+        break;
+      default:
+        fail(path + ".type", "unsupported geometry type");
+    }
+  }
+  function feature(f, path) {
+    if (!f || typeof f !== "object" || f.type !== "Feature") {
+      fail(path, "expected a Feature");
+      return;
+    }
+    if (!Object.hasOwn(f, "geometry")) fail(path, "missing geometry");
+    else geometry(f.geometry, path + ".geometry");
+    if (
+      !Object.hasOwn(f, "properties") ||
+      (f.properties !== null &&
+        (typeof f.properties !== "object" || Array.isArray(f.properties)))
+    )
+      fail(path + ".properties", "expected an object or null");
+  }
+  let features = 0;
+  if (!data || typeof data !== "object" || Array.isArray(data))
+    fail("$", "expected a GeoJSON object");
+  else if (data.type === "FeatureCollection") {
+    if (!Array.isArray(data.features)) fail("$.features", "expected an array");
+    else {
+      features = data.features.length;
+      data.features.forEach((f, i) => feature(f, "$.features[" + i + "]"));
+    }
+  } else if (data.type === "Feature") {
+    features = 1;
+    feature(data, "$");
+  } else geometry(data, "$");
+  let bounds = null;
+  if (positions.length) {
+    bounds = [Infinity, Infinity, -Infinity, -Infinity];
+    for (const p of positions) {
+      bounds[0] = Math.min(bounds[0], p[0]);
+      bounds[1] = Math.min(bounds[1], p[1]);
+      bounds[2] = Math.max(bounds[2], p[0]);
+      bounds[3] = Math.max(bounds[3], p[1]);
+    }
+  }
+  return {
+    valid: errors.length === 0,
+    errors,
+    features,
+    types,
+    positions,
+    bounds,
+  };
+}

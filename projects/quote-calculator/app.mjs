@@ -1,1 +1,53 @@
-import {quote} from './core.mjs';const form=document.querySelector('#quote-form');let current;function render(){try{const data=new FormData(form);current=quote({pages:Number(data.get('pages')),form:data.has('form'),map:data.has('map'),maintenance:data.has('maintenance'),urgent:data.has('urgent')});document.querySelector('#total').textContent='$'+current.total;const rows=current.items.map(([name,amount])=>{const row=document.createElement('div');row.className='row';const label=document.createElement('span');label.textContent=name;const price=document.createElement('strong');price.textContent='$'+amount;row.append(label,price);return row;});document.querySelector('#breakdown').replaceChildren(...rows);document.querySelector('#error').textContent='';document.querySelector('#download').disabled=false;}catch(error){current=null;document.querySelector('#total').textContent='—';document.querySelector('#breakdown').replaceChildren();document.querySelector('#error').textContent=error.message;document.querySelector('#download').disabled=true;}}form.addEventListener('input',render);form.addEventListener('reset',()=>setTimeout(render,0));document.querySelector('#download').addEventListener('click',()=>{if(!current)return;const text='DEMONSTRATION PROJECT BRIEF\nIllustrative rates only — not a binding quote.\n\n'+current.items.map(([label,value])=>label+': $'+value).join('\n')+'\nTotal: $'+current.total+' USD\n';const url=URL.createObjectURL(new Blob([text],{type:'text/plain'}));const a=document.createElement('a');a.href=url;a.download='demo-project-brief.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});render();
+import { quote } from "./core.mjs";
+const form = document.querySelector("#quote-form");
+let current;
+function render() {
+  try {
+    const data = new FormData(form);
+    current = quote({
+      pages: Number(data.get("pages")),
+      form: data.has("form"),
+      map: data.has("map"),
+      maintenance: data.has("maintenance"),
+      urgent: data.has("urgent"),
+    });
+    document.querySelector("#total").textContent = "$" + current.total;
+    const rows = current.items.map(([name, amount]) => {
+      const row = document.createElement("div");
+      row.className = "row";
+      const label = document.createElement("span");
+      label.textContent = name;
+      const price = document.createElement("strong");
+      price.textContent = "$" + amount;
+      row.append(label, price);
+      return row;
+    });
+    document.querySelector("#breakdown").replaceChildren(...rows);
+    document.querySelector("#error").textContent = "";
+    document.querySelector("#download").disabled = false;
+  } catch (error) {
+    current = null;
+    document.querySelector("#total").textContent = "—";
+    document.querySelector("#breakdown").replaceChildren();
+    document.querySelector("#error").textContent = error.message;
+    document.querySelector("#download").disabled = true;
+  }
+}
+form.addEventListener("input", render);
+form.addEventListener("reset", () => setTimeout(render, 0));
+document.querySelector("#download").addEventListener("click", () => {
+  if (!current) return;
+  const text =
+    "DEMONSTRATION PROJECT BRIEF\nIllustrative rates only — not a binding quote.\n\n" +
+    current.items.map(([label, value]) => label + ": $" + value).join("\n") +
+    "\nTotal: $" +
+    current.total +
+    " USD\n";
+  const url = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "demo-project-brief.txt";
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+render();

@@ -14,9 +14,9 @@ Clients need to see how scope affects cost. The calculator separates pricing log
 
 From the repository root with Node.js 20+:
 
-~~~sh
+```sh
 npm start
-~~~
+```
 
 Open `http://127.0.0.1:4173/projects/quote-calculator/`. No package installation or build step is required.
 
