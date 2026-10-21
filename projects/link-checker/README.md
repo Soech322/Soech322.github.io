@@ -2,7 +2,7 @@
 
 A Python command-line tool that crawls same-origin HTML pages and exports a report of working and broken links.
 
-**Project type:** self-initiated demonstration, created with AI assistance. Not paid client work.
+**Project type:** self-initiated demonstration. Not paid client work.
 
 **Skills:** Python · Maintenance · Technical support
 
@@ -32,3 +32,4 @@ Defaults to 25 checked URLs; maximum 100. HTML bodies above 1 MB are not parsed.
 ## What to demonstrate to a client
 
 Run the local tests, then check an authorized small website and inspect the JSON report.
+

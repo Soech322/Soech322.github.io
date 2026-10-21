@@ -36,7 +36,7 @@ Python 3.10+ is required for the crawler tests.
 
 ## Attribution and scope
 
-These are self-initiated demonstration projects created with AI assistance. They are not presented as paid client work. The fictional business and map locations are clearly marked as samples. This repository is separate from the team playground-mapping project mentioned in my professional profile.
+These are self-initiated demonstration projects. They are not presented as paid client work. The fictional business and map locations are clearly marked as samples. This repository is separate from the team playground-mapping project mentioned in my professional profile.
 
 Leaflet 1.9.4 is loaded from unpkg under its BSD-2-Clause license. Base map tiles are supplied by OpenStreetMap with attribution. Google Fonts supplies DM Sans and Space Grotesk; system fonts are used as fallbacks.
 
@@ -47,3 +47,4 @@ Repository: Soech322.github.io. In Settings → Pages, select **Deploy from a br
 ## Work with me
 
 For website fixes, landing pages, or interactive map features, [send a LinkedIn message](https://www.linkedin.com/in/vladimir-borodkin-65a210445/) with the website, task, and preferred deadline. Scope and pricing are agreed before work starts.
+

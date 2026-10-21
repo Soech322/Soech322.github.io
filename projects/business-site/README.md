@@ -2,7 +2,7 @@
 
 A responsive service website for a fictional garden studio. Clear services, accessible navigation, and a local inquiry demo.
 
-**Project type:** self-initiated demonstration, created with AI assistance. Not paid client work.
+**Project type:** self-initiated demonstration. Not paid client work.
 
 **Skills:** HTML · CSS · Web development
 
@@ -31,3 +31,4 @@ Fictional business content; no booking service, backend, or email delivery.
 ## What to demonstrate to a client
 
 Resize the page, follow the service links, and preview an inquiry.
+

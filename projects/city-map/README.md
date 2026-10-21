@@ -2,7 +2,7 @@
 
 A filterable interactive city map with connected results, keyboard-friendly controls, and synthetic demonstration data.
 
-**Project type:** self-initiated demonstration, created with AI assistance. Not paid client work.
+**Project type:** self-initiated demonstration. Not paid client work.
 
 **Skills:** Leaflet.js · JavaScript · GIS
 
@@ -31,3 +31,4 @@ Leaflet 1.9.4 loads from unpkg and base tiles from OpenStreetMap. The map needs 
 ## What to demonstrate to a client
 
 Search for “garden”, filter playgrounds, select a result, and reset the view.
+

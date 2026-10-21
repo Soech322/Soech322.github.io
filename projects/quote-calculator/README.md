@@ -2,7 +2,7 @@
 
 An interactive website quote builder with an itemized estimate, validation, and a downloadable project brief.
 
-**Project type:** self-initiated demonstration, created with AI assistance. Not paid client work.
+**Project type:** self-initiated demonstration. Not paid client work.
 
 **Skills:** JavaScript · DOM · Forms
 
@@ -31,3 +31,4 @@ Illustrative fixed rates; no taxes, currency conversion, payment processing, or 
 ## What to demonstrate to a client
 
 Change the scope, try an invalid page count, then download the itemized brief.
+
