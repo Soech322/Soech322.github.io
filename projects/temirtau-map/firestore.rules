@@ -1,0 +1,130 @@
+rules_version = '2';
+
+// Правила безопасности Firestore для проекта mapb-a3590.
+// Читать карту могут все, изменять — только администраторы: пользователи
+// Firebase Authentication, для которых вручную создан документ admins/{uid}.
+// Публикация: Firebase Console → Firestore Database → Rules (или `firebase deploy --only firestore:rules`).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // Защита от повторения аварии: пустой шаблон описания из импорт-тула
+    // («Кадастровый номер:  Площадь:  кв.м Категория: ») база больше не примет.
+    // Проверяем только само изменение описания — иначе документ со старым
+    // испорченным описанием нельзя было бы даже назначить ответственному.
+    function descriptionOk() {
+      let next = request.resource.data.get('description', null);
+      let prev = resource == null ? null : resource.data.get('description', null);
+      return next == prev
+        || !(next is string)
+        || !next.matches('^\\s*Кадастровый номер:\\s*Площадь:\\s*кв\\.?\\s*м\\s*Категория:\\s*$');
+    }
+
+    // Old clients must not publish new bearer-token download URLs in public documents.
+    // Existing values can be migrated without blocking unrelated edits.
+    function photoPathOk(field) {
+      let next = request.resource.data.get(field, null);
+      let prev = resource == null ? null : resource.data.get(field, null);
+      return next == prev || next == null
+        || (next is string && next.matches('^registry-photos/(gis|repair)/[^/]+/[^/]+
+      allow read: if true;
+      allow create, update: if isAdmin() && descriptionOk() && photoPathsOk();
+      allow delete: if isAdmin();
+    }
+
+    match /repair_works_overrides/{id} {
+      allow read: if true;
+      allow create, update: if isAdmin() && descriptionOk() && photoPathsOk();
+      allow delete: if isAdmin();
+    }
+
+    // Ответственные: имя, телефон и цвет показываются на публичной карте
+    match /assignees/{id} {
+      allow read: if true;
+      allow write: if isAdmin()
+        && (request.method == 'delete' || (request.resource.data.name is string && request.resource.data.name.size() > 0));
+    }
+
+    // Ручные привязки строк Google-таблицы РВР к площадкам
+    match /sheet_links/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Журнал изменений: только дописывать, править и удалять записи нельзя
+    match /audit_log/{id} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+      allow update, delete: if false;
+    }
+
+    // Список администраторов редактируется только из консоли Firebase
+    match /admins/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // Всё остальное (в т.ч. старая коллекция points раздела «Вывоз мусора») — закрыто
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+));
+    }
+
+    function photoPathsOk() {
+      return photoPathOk('photo1Url') && photoPathOk('photo2Url');
+    }
+
+    match /gis_control_overrides/{id} {
+      allow read: if true;
+      allow create, update: if isAdmin() && descriptionOk() && photoPathsOk();
+      allow delete: if isAdmin();
+    }
+
+    match /repair_works_overrides/{id} {
+      allow read: if true;
+      allow create, update: if isAdmin() && descriptionOk() && photoPathsOk();
+      allow delete: if isAdmin();
+    }
+
+    // Ответственные: имя, телефон и цвет показываются на публичной карте
+    match /assignees/{id} {
+      allow read: if true;
+      allow write: if isAdmin()
+        && (request.method == 'delete' || (request.resource.data.name is string && request.resource.data.name.size() > 0));
+    }
+
+    // Ручные привязки строк Google-таблицы РВР к площадкам
+    match /sheet_links/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Журнал изменений: только дописывать, править и удалять записи нельзя
+    match /audit_log/{id} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+      allow update, delete: if false;
+    }
+
+    // Список администраторов редактируется только из консоли Firebase
+    match /admins/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // Всё остальное (в т.ч. старая коллекция points раздела «Вывоз мусора») — закрыто
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

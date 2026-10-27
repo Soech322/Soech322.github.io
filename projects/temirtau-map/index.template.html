@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B1012">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Рабочие карты Темиртау: ГИС-контроль, детские площадки, кадастровые зоны и ремонтные работы.">
+<title>Темиртау — рабочие карты</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body class="bm-satellite">
+<noscript><div class="noscript">Для работы карты нужен включённый JavaScript.</div></noscript>
+
+<div id="data-warning" class="data-warning hidden" role="alert">
+  <span data-ic="alert"></span>
+  <span id="data-warning-text"></span>
+  <button type="button" class="icon-btn icon-btn-sm" id="data-warning-close" aria-label="Закрыть"><span data-ic="x"></span></button>
+</div>
+
+<div id="map" aria-label="Карта"></div>
+
+<!-- Верхняя панель: меню, поиск, фильтры -->
+<header class="topbar">
+  <button type="button" class="icon-btn" id="menu-btn" data-i18n-aria="menu"><span data-ic="menu"></span></button>
+  <div class="search" id="search-wrap">
+    <span data-ic="search" class="search-ic"></span>
+    <input type="search" id="search-input" autocomplete="off" enterkeyhint="search" aria-autocomplete="list" aria-controls="search-suggest">
+    <button type="button" class="icon-btn icon-btn-sm hidden" id="search-clear" data-i18n-aria="clear"><span data-ic="x"></span></button>
+    <button type="button" class="search-go" id="search-btn" data-i18n="search_btn">Найти</button>
+    <div id="search-suggest" class="suggest hidden" role="listbox"></div>
+  </div>
+  <button type="button" class="icon-btn" id="filter-btn" data-i18n-aria="filters">
+    <span data-ic="filter"></span><span class="badge hidden" id="filter-badge">0</span>
+  </button>
+</header>
+
+<nav class="sections" aria-label="Разделы">
+  <button type="button" class="section-tab" data-section="gis" data-i18n="section_gis">ГИС-контроль</button>
+  <button type="button" class="section-tab" data-section="repair" data-i18n="section_repair">Ремонтные работы</button>
+  <button type="button" class="section-count" id="object-count-btn" data-i18n-aria="catalog_open"><span data-ic="list"></span><b id="object-count">0</b></button>
+</nav>
+
+<!-- Кнопки справа -->
+<div class="fab-stack">
+  <div class="fab-group">
+    <button type="button" class="fab" id="layers-btn" data-i18n-aria="basemap"><span data-ic="layers"></span></button>
+    <div class="layers-pop hidden" id="layers-pop">
+      <div class="pop-title" data-i18n="basemap">Подложка карты</div>
+      <button type="button" class="bm-option" data-basemap="satellite"><span class="bm-thumb bm-thumb-satellite"></span><span data-i18n="bm_satellite">Спутник</span></button>
+      <button type="button" class="bm-option" data-basemap="dark"><span class="bm-thumb bm-thumb-dark"></span><span data-i18n="bm_dark">Тёмная</span></button>
+      <button type="button" class="bm-option" data-basemap="light"><span class="bm-thumb bm-thumb-light"></span><span data-i18n="bm_light">Светлая</span></button>
+    </div>
+  </div>
+  <button type="button" class="fab hidden" id="compass-btn" data-i18n-aria="north_up"><span data-ic="compass"></span></button>
+  <button type="button" class="fab" id="route-btn" data-i18n-aria="route_title"><span data-ic="route"></span></button>
+  <button type="button" class="fab" id="locate-btn" data-i18n-aria="my_location"><span data-ic="locate"></span></button>
+  <div class="fab-zoom">
+    <button type="button" class="fab" id="zoom-in" data-i18n-aria="zoom_in"><span data-ic="plus"></span></button>
+    <button type="button" class="fab" id="zoom-out" data-i18n-aria="zoom_out"><span data-ic="minus"></span></button>
+  </div>
+</div>
+
+<div id="legend" class="legend hidden"></div>
+
+<!-- Маршрут -->
+<div id="route-panel" class="route-panel hidden">
+  <div class="route-head">
+    <b data-i18n="route_title">Маршрут</b>
+    <button type="button" class="icon-btn icon-btn-sm" id="route-close" data-i18n-aria="close"><span data-ic="x"></span></button>
+  </div>
+  <div class="route-field">
+    <i class="route-dot from"></i>
+    <input type="text" id="route-from" autocomplete="off" data-i18n-placeholder="route_from">
+    <button type="button" class="icon-btn icon-btn-sm" id="route-geo" data-i18n-aria="my_location"><span data-ic="locate"></span></button>
+  </div>
+  <div class="route-field">
+    <i class="route-dot to"></i>
+    <input type="text" id="route-to" autocomplete="off" data-i18n-placeholder="route_to">
+  </div>
+  <div class="seg seg-full">
+    <button type="button" class="route-profile active" data-profile="driving"><span data-ic="car"></span><span data-i18n="route_car">Авто</span></button>
+    <button type="button" class="route-profile" data-profile="foot"><span data-ic="walk"></span><span data-i18n="route_foot">Пешком</span></button>
+  </div>
+  <button type="button" class="btn btn-primary wide" id="route-build"><span data-ic="route"></span><span data-i18n="route_build">Проложить маршрут</span></button>
+</div>
+<div id="route-info" class="route-info hidden">
+  <span data-ic="route"></span><span id="route-info-text"></span>
+  <button type="button" class="icon-btn icon-btn-sm" id="route-info-close" data-i18n-aria="route_clear"><span data-ic="x"></span></button>
+</div>
+
+<!-- Карточка объекта и линия-указатель -->
+<svg id="card-line" class="card-line" aria-hidden="true">
+  <line id="card-line-path" x1="0" y1="0" x2="0" y2="0"/>
+  <circle id="card-line-dot" cx="0" cy="0" r="7"/>
+</svg>
+<div id="card" class="card hidden" role="dialog" aria-live="polite"></div>
+
+<!-- Тулбар режимов (рисование, назначение, перемещение) -->
+<div id="toolbar" class="toolbar hidden"></div>
+
+<div id="backdrop" class="backdrop"></div>
+
+<!-- Меню -->
+<aside id="drawer" class="drawer" aria-label="Меню">
+  <div class="drawer-head">
+    <div class="brand">
+      <img src="icon.svg" alt="" width="40" height="40">
+      <div><b data-i18n="app_title">Темиртау</b><span data-i18n="app_subtitle">Рабочие карты</span></div>
+    </div>
+    <button type="button" class="icon-btn" id="drawer-close" data-i18n-aria="close"><span data-ic="x"></span></button>
+  </div>
+  <div class="drawer-body">
+    <div class="menu-label" data-i18n="language">Язык</div>
+    <div class="seg seg-full">
+      <button type="button" data-lang="ru">Русский</button>
+      <button type="button" data-lang="kk">Қазақша</button>
+      <button type="button" data-lang="en">English</button>
+    </div>
+
+    <div class="menu-label" data-i18n="basemap">Подложка карты</div>
+    <div class="bm-grid">
+      <button type="button" class="bm-tile" data-basemap="satellite"><span class="bm-thumb bm-thumb-satellite"></span><span data-i18n="bm_satellite">Спутник</span></button>
+      <button type="button" class="bm-tile" data-basemap="dark"><span class="bm-thumb bm-thumb-dark"></span><span data-i18n="bm_dark">Тёмная</span></button>
+      <button type="button" class="bm-tile" data-basemap="light"><span class="bm-thumb bm-thumb-light"></span><span data-i18n="bm_light">Светлая</span></button>
+    </div>
+
+    <div class="menu-label" data-i18n="menu_work">Работа с картой</div>
+    <button type="button" class="menu-item" id="m-catalog"><span data-ic="list"></span><span data-i18n="catalog_menu">Список объектов</span><em class="menu-badge" id="m-count-objects">0</em></button>
+    <button type="button" class="menu-item" id="m-people-list"><span data-ic="users"></span><span data-i18n="assignees_title">Ответственные</span><em class="menu-badge" id="m-count-people">0</em></button>
+    <button type="button" class="menu-item" id="m-filters"><span data-ic="filter"></span><span data-i18n="filters">Фильтры</span></button>
+    <button type="button" class="menu-item" id="m-csv"><span data-ic="download"></span><span data-i18n="export_csv_menu">Скачать таблицу (Excel)</span></button>
+
+    <div class="menu-label" data-i18n="menu_admin">Администрирование</div>
+    <div id="drawer-admin"></div>
+
+    <div class="menu-label" data-i18n="about">О проекте</div>
+    <div class="about">
+      <p data-i18n="about_text">Карта для контроля детских площадок, кадастровых зон и ремонтных работ в Темиртау.</p>
+      <p><span data-i18n="authors">Авторы</span>: Шутов Богдан, Лунгу Альберт, Бородкин Владимир</p>
+      <p class="muted" data-i18n="shortcuts">Подсказка: «/» — поиск, Esc — закрыть.</p>
+    </div>
+  </div>
+</aside>
+
+<!-- Панель (справа на компьютере, шторка снизу на телефоне) -->
+<section id="sheet" class="sheet" aria-labelledby="sheet-title">
+  <div class="sheet-grip" id="sheet-grip"><span></span></div>
+  <div class="sheet-head" id="sheet-head">
+    <h3 id="sheet-title"></h3>
+    <button type="button" class="icon-btn" id="sheet-close" data-i18n-aria="close"><span data-ic="x"></span></button>
+  </div>
+  <div class="sheet-body" id="sheet-body"></div>
+</section>
+
+<div id="dialog" class="dialog"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<div id="loading" class="loading">
+  <img src="icon.svg" alt="" width="64" height="64">
+  <div class="loading-title">Темиртау</div>
+  <div class="loading-sub">рабочие карты</div>
+  <div class="loading-spinner"></div>
+</div>
+
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="vendor/leaflet-rotate.js"></script>
+<script src="vendor/firebase-app-compat.js"></script>
+<script src="vendor/firebase-auth-compat.js"></script>
+<script src="vendor/firebase-firestore-compat.js"></script>
+<script src="vendor/firebase-storage-compat.js"></script>
+<script src="gis-control-data.js"></script>
+<script src="repair-works-data.js"></script>
+<script src="house-numbers-data.js"></script>
+<script src="landmarks-data.js"></script>
+<script src="playground-registry-data.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/core.js"></script>
+<script src="js/sheet-sync.js"></script>
+<script src="js/photos.js"></script>
+<script src="js/registry.js"></script>
+<script src="js/snapshot.js"></script>
+</body>
+</html>

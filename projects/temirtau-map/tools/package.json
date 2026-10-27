@@ -1,0 +1,5 @@
+{
+  "private": true,
+  "description": "Operator-only photo migration; never shipped to the browser",
+  "dependencies": { "firebase-admin": "^13.0.0" }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Темиртау — рабочие карты",
+  "short_name": "Темиртау",
+  "description": "ГИС-контроль, детские площадки, кадастровые зоны и ремонтные работы Темиртау",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0B1012",
+  "theme_color": "#0B1012",
+  "lang": "ru",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,33 @@
+rules_version = '2';
+
+// Правила Firebase Storage: фото площадок видят только администраторы, загружают и удаляют
+// только администраторы (документ admins/{uid} в Firestore).
+// Публикация: Firebase Console → Storage → Rules (или `firebase deploy --only storage`).
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isAdmin() {
+      return request.auth != null
+        && firestore.exists(/databases/(default)/documents/admins/$(request.auth.uid));
+    }
+
+    match /registry-photos/{section}/{featureId}/{file} {
+      allow read: if isAdmin();
+      allow delete: if isAdmin();
+      // фото сжимаются на устройстве до ~400 КБ; 3 МБ — запас
+      allow create, update: if isAdmin()
+        && request.resource.size < 3 * 1024 * 1024
+        && request.resource.contentType.matches('image/(jpeg|png|webp|gif|avif|heic|heif)');
+    }
+
+    // Старые фото раздела «Вывоз мусора» — чтение только администраторами
+    match /card-photos/{rest=**} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /{rest=**} {
+      allow read, write: if false;
+    }
+  }
+}
